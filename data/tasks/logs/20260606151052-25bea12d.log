@@ -1,0 +1,20 @@
+﻿{"type": "task_created", "task_id": "20260606151052-25bea12d", "mode": "single", "timestamp": "2026-06-06T15:10:52.303557"}
+{"type": "task_updated", "task_id": "20260606151052-25bea12d", "status": "running", "success_count": 0, "failed_count": 0, "timestamp": "2026-06-06T15:10:52.304254"}
+{"type": "log", "message": "开始爬取单角色", "timestamp": "2026-06-06T15:10:52.304398", "current": null, "total": null, "success": null, "failed": null}
+{"type": "task_updated", "task_id": "20260606151052-25bea12d", "status": "running", "success_count": 0, "failed_count": 0, "timestamp": "2026-06-06T15:10:52.304784"}
+{"type": "progress", "message": "正在初始化爬虫", "timestamp": "2026-06-06T15:10:52.304951", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "开始爬取单角色", "timestamp": "2026-06-06T15:10:52.305325", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "progress", "message": "正在处理：零（男主）", "timestamp": "2026-06-06T15:10:57.467272", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：点击查看", "timestamp": "2026-06-06T15:10:58.283125", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：点击查看", "timestamp": "2026-06-06T15:10:59.252586", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：查看升级效果", "timestamp": "2026-06-06T15:11:00.363547", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：查看升级效果", "timestamp": "2026-06-06T15:11:01.336620", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：查看升级效果", "timestamp": "2026-06-06T15:11:02.402985", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：查看升级效果", "timestamp": "2026-06-06T15:11:03.375358", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：面板数据", "timestamp": "2026-06-06T15:11:04.345667", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：角色立绘", "timestamp": "2026-06-06T15:11:05.314955", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：Lv.1", "timestamp": "2026-06-06T15:11:06.299503", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：Lv.2", "timestamp": "2026-06-06T15:11:07.225219", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：Lv.3", "timestamp": "2026-06-06T15:11:08.149248", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：Lv.4", "timestamp": "2026-06-06T15:11:09.078107", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：Lv.5", "timestamp": "2026-06-06T15:11:09.999467", "current": 1, "total": 1, "success": null, "failed": null}

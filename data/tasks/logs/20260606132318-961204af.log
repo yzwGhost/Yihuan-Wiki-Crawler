@@ -1,0 +1,10 @@
+﻿{"type": "task_created", "task_id": "20260606132318-961204af", "mode": "single", "timestamp": "2026-06-06T13:23:18.831578"}
+{"type": "task_updated", "task_id": "20260606132318-961204af", "status": "running", "success_count": 0, "failed_count": 0, "timestamp": "2026-06-06T13:23:18.831928"}
+{"type": "log", "message": "开始爬取单角色", "timestamp": "2026-06-06T13:23:18.832060", "current": null, "total": null, "success": null, "failed": null}
+{"type": "task_updated", "task_id": "20260606132318-961204af", "status": "running", "success_count": 0, "failed_count": 0, "timestamp": "2026-06-06T13:23:18.832380"}
+{"type": "progress", "message": "正在初始化爬虫", "timestamp": "2026-06-06T13:23:18.832487", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "开始爬取单角色", "timestamp": "2026-06-06T13:23:18.832794", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "task_updated", "task_id": "20260606132318-961204af", "status": "running", "success_count": 0, "failed_count": 1, "timestamp": "2026-06-06T13:23:18.852263"}
+{"type": "character_failed", "url": "https://www.gamekee.com/yh/669570.html", "error": "[WinError 5] 拒绝访问。", "timestamp": "2026-06-06T13:23:18.852416"}
+{"type": "task_updated", "task_id": "20260606132318-961204af", "status": "failed", "success_count": 0, "failed_count": 1, "timestamp": "2026-06-06T13:23:18.852683"}
+{"type": "done", "message": "任务结束", "timestamp": "2026-06-06T13:23:18.852834", "current": null, "total": null, "success": 0, "failed": 1}

@@ -1,0 +1,33 @@
+{
+  "name": "yihuan-crawler-desktop",
+  "version": "0.1.0",
+  "description": "Electron + React + TypeScript + Ant Design desktop skeleton for Yihuan crawler",
+  "main": "./out/main/index.js",
+  "author": "OpenAI Codex",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^6.1.0",
+    "antd": "^5.28.0",
+    "dayjs": "^1.11.18",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^5.1.0",
+    "electron": "^37.0.0",
+    "electron-vite": "^4.0.0",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.0"
+  }
+}

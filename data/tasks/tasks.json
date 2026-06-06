@@ -1,0 +1,18 @@
+﻿[
+  {
+    "task_id": "20260606165309-232f3102",
+    "mode": "single",
+    "status": "completed",
+    "total": 1,
+    "success_count": 1,
+    "failed_count": 0,
+    "started_at": "2026-06-06T16:53:09.697630",
+    "finished_at": "2026-06-06T16:53:49.772264",
+    "success_urls": [
+      "https://www.gamekee.com/yh/669570.html"
+    ],
+    "failed_urls": [],
+    "failed_images": [],
+    "log_path": "D:\\work\\project\\yihuan-spider-desktop\\data\\tasks\\logs\\20260606165309-232f3102.log"
+  }
+]

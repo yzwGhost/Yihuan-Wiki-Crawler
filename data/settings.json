@@ -1,0 +1,12 @@
+{
+  "pythonPath": "python",
+  "outputDir": "data",
+  "exportDir": "data/exports",
+  "downloadImages": true,
+  "headless": false,
+  "maxClick": 50,
+  "pageWaitMs": 3000,
+  "clickWaitMs": 1200,
+  "resume": false,
+  "verboseLogs": true
+}

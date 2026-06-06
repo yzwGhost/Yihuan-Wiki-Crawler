@@ -1,0 +1,31 @@
+﻿{"type": "task_created", "task_id": "20260606164552-f7b25638", "mode": "single", "timestamp": "2026-06-06T16:45:52.963440"}
+{"type": "task_updated", "task_id": "20260606164552-f7b25638", "status": "running", "success_count": 0, "failed_count": 0, "timestamp": "2026-06-06T16:45:52.964253"}
+{"type": "log", "message": "开始爬取单角色", "timestamp": "2026-06-06T16:45:52.964380", "current": null, "total": null, "success": null, "failed": null}
+{"type": "task_updated", "task_id": "20260606164552-f7b25638", "status": "running", "success_count": 0, "failed_count": 0, "timestamp": "2026-06-06T16:45:52.964667"}
+{"type": "progress", "message": "正在初始化爬虫", "timestamp": "2026-06-06T16:45:52.964949", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "开始爬取单角色", "timestamp": "2026-06-06T16:45:52.965389", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "progress", "message": "正在处理：零（男主）", "timestamp": "2026-06-06T16:46:00.504233", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：点击查看", "timestamp": "2026-06-06T16:46:01.857631", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：点击查看", "timestamp": "2026-06-06T16:46:03.385249", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：查看升级效果", "timestamp": "2026-06-06T16:46:04.915410", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：查看升级效果", "timestamp": "2026-06-06T16:46:06.434562", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：查看升级效果", "timestamp": "2026-06-06T16:46:08.001025", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：查看升级效果", "timestamp": "2026-06-06T16:46:09.524190", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：面板数据", "timestamp": "2026-06-06T16:46:11.037242", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：角色立绘", "timestamp": "2026-06-06T16:46:12.540884", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：Lv.1", "timestamp": "2026-06-06T16:46:14.051194", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：Lv.2", "timestamp": "2026-06-06T16:46:15.563454", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：Lv.3", "timestamp": "2026-06-06T16:46:17.064755", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：Lv.4", "timestamp": "2026-06-06T16:46:18.569859", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：Lv.5", "timestamp": "2026-06-06T16:46:20.081790", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：1级觉醒", "timestamp": "2026-06-06T16:46:21.584472", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：2级觉醒", "timestamp": "2026-06-06T16:46:23.092459", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：3级觉醒", "timestamp": "2026-06-06T16:46:24.597884", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：4级觉醒", "timestamp": "2026-06-06T16:46:26.110323", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：5级觉醒", "timestamp": "2026-06-06T16:46:27.613120", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：6级觉醒", "timestamp": "2026-06-06T16:46:29.126475", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已筛选出 25 张角色相关图片", "timestamp": "2026-06-06T16:46:29.345628", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "task_updated", "task_id": "20260606164552-f7b25638", "status": "running", "success_count": 1, "failed_count": 0, "timestamp": "2026-06-06T16:46:34.919983"}
+{"type": "character_done", "name": "零（男主）", "url": "https://www.gamekee.com/yh/669570.html", "timestamp": "2026-06-06T16:46:34.920171"}
+{"type": "task_updated", "task_id": "20260606164552-f7b25638", "status": "completed", "success_count": 1, "failed_count": 0, "timestamp": "2026-06-06T16:46:34.920516"}
+{"type": "done", "message": "任务结束", "timestamp": "2026-06-06T16:46:34.920697", "current": null, "total": null, "success": 1, "failed": 0}

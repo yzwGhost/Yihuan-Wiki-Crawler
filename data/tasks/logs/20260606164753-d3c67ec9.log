@@ -1,0 +1,32 @@
+﻿{"type": "task_created", "task_id": "20260606164753-d3c67ec9", "mode": "single", "timestamp": "2026-06-06T16:47:53.684713"}
+{"type": "task_updated", "task_id": "20260606164753-d3c67ec9", "status": "running", "success_count": 0, "failed_count": 0, "timestamp": "2026-06-06T16:47:53.685303"}
+{"type": "log", "message": "开始爬取单角色", "timestamp": "2026-06-06T16:47:53.685443", "current": null, "total": null, "success": null, "failed": null}
+{"type": "task_updated", "task_id": "20260606164753-d3c67ec9", "status": "running", "success_count": 0, "failed_count": 0, "timestamp": "2026-06-06T16:47:53.685724"}
+{"type": "progress", "message": "正在初始化爬虫", "timestamp": "2026-06-06T16:47:53.685839", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "开始爬取单角色", "timestamp": "2026-06-06T16:47:53.686187", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "progress", "message": "正在处理：零（男主）", "timestamp": "2026-06-06T16:48:00.854868", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：点击查看", "timestamp": "2026-06-06T16:48:02.197428", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：点击查看", "timestamp": "2026-06-06T16:48:03.716877", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：查看升级效果", "timestamp": "2026-06-06T16:48:05.230340", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：查看升级效果", "timestamp": "2026-06-06T16:48:06.766478", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：查看升级效果", "timestamp": "2026-06-06T16:48:17.097466", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：面板数据", "timestamp": "2026-06-06T16:48:18.616284", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：角色立绘", "timestamp": "2026-06-06T16:48:20.123335", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：Lv.1", "timestamp": "2026-06-06T16:48:21.702097", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：Lv.2", "timestamp": "2026-06-06T16:48:23.295304", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：Lv.3", "timestamp": "2026-06-06T16:48:24.834652", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：Lv.4", "timestamp": "2026-06-06T16:48:26.441582", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：Lv.5", "timestamp": "2026-06-06T16:48:28.041044", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：1级觉醒", "timestamp": "2026-06-06T16:48:29.598522", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：2级觉醒", "timestamp": "2026-06-06T16:48:31.115588", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：3级觉醒", "timestamp": "2026-06-06T16:48:32.630684", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：4级觉醒", "timestamp": "2026-06-06T16:48:34.146564", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：5级觉醒", "timestamp": "2026-06-06T16:48:35.650997", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已提取交互内容：6级觉醒", "timestamp": "2026-06-06T16:48:37.167961", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "log", "message": "已筛选出 25 张角色相关图片", "timestamp": "2026-06-06T16:48:37.382991", "current": 1, "total": 1, "success": null, "failed": null}
+{"type": "image_failed", "character_name": "零（男主）", "url": "https://cdnimg-v2.gamekee.com/wiki2.0/images/w_4400/h_1397/50442/772168/2025/6/1/344306.png?x-image-process=image/format,webp/ignore-error,1&eo-img.format=webp", "error": "('Connection broken: IncompleteRead(0 bytes read, 125630 more expected)', IncompleteRead(0 bytes read, 125630 more expected))", "timestamp": "2026-06-06T16:48:37.752947"}
+{"type": "task_updated", "task_id": "20260606164753-d3c67ec9", "status": "running", "success_count": 0, "failed_count": 0, "timestamp": "2026-06-06T16:48:37.753308"}
+{"type": "task_updated", "task_id": "20260606164753-d3c67ec9", "status": "running", "success_count": 1, "failed_count": 0, "timestamp": "2026-06-06T16:48:41.947430"}
+{"type": "character_done", "name": "零（男主）", "url": "https://www.gamekee.com/yh/669570.html", "timestamp": "2026-06-06T16:48:41.947599"}
+{"type": "task_updated", "task_id": "20260606164753-d3c67ec9", "status": "completed", "success_count": 1, "failed_count": 0, "timestamp": "2026-06-06T16:48:41.947885"}
+{"type": "done", "message": "任务结束", "timestamp": "2026-06-06T16:48:41.947996", "current": null, "total": null, "success": 1, "failed": 0}
