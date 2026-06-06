@@ -2,14 +2,15 @@
 
 The desktop crawler now has enough core functionality to be packaged for Windows, but it still assumes a development-time Python entrypoint and a project-root `data/` directory. That will break once the app is installed because packaged apps should not write into the installation directory, and the crawler runtime needs a stable executable path.
 
-This stage adds Windows packaging, packaged Python runtime handling, user-data storage, and environment checks so the installed app can validate its runtime before crawling.
+This stage adds Windows packaging, packaged Python runtime handling, app-local data storage, and environment checks so the installed app can validate its runtime before crawling.
 
 ## What Changes
 
 - Add `electron-builder` configuration for Windows NSIS packaging
 - Add resource layout under `resources/` for icon and packaged Python runtime
 - Refactor main-process path handling to distinguish development vs packaged runtime using `app.isPackaged`
-- Route packaged data writes to `app.getPath("userData")/data`
+- Route packaged data writes to the installed application directory's `data/` folder
+- Auto-create the packaged `data/` directory tree on first launch if it does not exist
 - Update Python process launching to use:
   - development Python + `python/crawler/main.py`
   - packaged `resources/python/yihuan-crawler.exe`

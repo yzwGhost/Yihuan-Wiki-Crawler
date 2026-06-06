@@ -7,6 +7,7 @@ import { registerExportIpc } from '@main/ipc/export.ipc'
 import { registerFileIpc } from '@main/ipc/file.ipc'
 import { registerSettingsIpc } from '@main/ipc/settings.ipc'
 import { registerTasksIpc } from '@main/ipc/tasks.ipc'
+import { ensureAppDataStructure } from '@main/services/path.service'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -35,7 +36,9 @@ function createWindow(): void {
   }
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+  await ensureAppDataStructure()
+
   ipcMain.handle('app:ping', async (_event, message: string) => {
     return `pong: ${message}`
   })

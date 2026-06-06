@@ -1,5 +1,6 @@
-import { app } from 'electron'
 import { existsSync } from 'node:fs'
+import { mkdir } from 'node:fs/promises'
+import { app } from 'electron'
 import { dirname, isAbsolute, join, resolve } from 'node:path'
 
 export interface DataPaths {
@@ -18,8 +19,12 @@ function getProjectRoot(): string {
   return process.cwd()
 }
 
+function getPackagedAppDir(): string {
+  return dirname(process.execPath)
+}
+
 function getRuntimeBaseDir(): string {
-  return app.isPackaged ? app.getPath('userData') : getProjectRoot()
+  return app.isPackaged ? getPackagedAppDir() : getProjectRoot()
 }
 
 export function getAppDataDir(): string {
@@ -106,7 +111,17 @@ export function getDataBaseDir(): string {
   return dirname(getAppDataDir())
 }
 
+export async function ensureAppDataStructure(): Promise<void> {
+  await mkdir(getCharactersDir(), { recursive: true })
+  await mkdir(getImagesDir(), { recursive: true })
+  await mkdir(getExportsDir(), { recursive: true })
+  await mkdir(getTaskLogsDir(), { recursive: true })
+  await mkdir(dirname(getSettingsPath()), { recursive: true })
+}
+
 export async function resolveDataPaths(): Promise<DataPaths> {
+  await ensureAppDataStructure()
+
   return {
     projectRoot: getProjectRoot(),
     runtimeBaseDir: getRuntimeBaseDir(),

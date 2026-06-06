@@ -1,14 +1,21 @@
 ## ADDED Requirements
 
-### Requirement: Packaged app shall store data outside the install directory
+### Requirement: Packaged app shall store data in the application directory
 
-The application SHALL write runtime data into the user data directory when packaged.
+The application SHALL write runtime data into the installed application directory's `data/` folder when packaged.
 
 #### Scenario: Packaged app saves crawl data
 
 - **WHEN** `app.isPackaged` is `true`
-- **THEN** runtime data is stored under `app.getPath("userData")/data`
+- **THEN** runtime data is stored under `<application directory>/data`
 - **AND** characters, images, exports, tasks, logs, and settings are written there
+
+#### Scenario: Packaged app auto-creates data directories
+
+- **WHEN** `app.isPackaged` is `true`
+- **AND** the packaged `data/` directory does not exist yet
+- **THEN** the application creates `data/`
+- **AND** creates the required child directories for characters, images, exports, tasks, and task logs before runtime access
 
 #### Scenario: Development app saves crawl data
 
