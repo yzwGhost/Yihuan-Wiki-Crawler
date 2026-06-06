@@ -4,7 +4,7 @@ import { electronApi } from '@renderer/api/electronApi'
 import { useCharacterStore } from '@renderer/stores/characterStore'
 import { useSettingsStore } from '@renderer/stores/settingsStore'
 
-const { Paragraph, Text, Title } = Typography
+const { Paragraph, Text } = Typography
 
 interface ExportFormValues {
   characterName?: string
@@ -37,7 +37,7 @@ export function ExportData(): JSX.Element {
       setLastExportPath(result.path)
       void message.success(successText)
     } catch (error) {
-      void message.error(error instanceof Error ? error.message : '导出失败')
+      void message.error(error instanceof Error ? error.message : '导出失败。')
     } finally {
       setBusyKey(null)
     }
@@ -51,26 +51,25 @@ export function ExportData(): JSX.Element {
       }
       await saveSettings({ ...settings, exportDir: selectedPath })
       setLastExportPath(selectedPath)
-      void message.success('导出目录已更新')
+      void message.success('导出目录已更新。')
     } catch (error) {
-      void message.error(error instanceof Error ? error.message : '选择导出目录失败')
+      void message.error(error instanceof Error ? error.message : '选择导出目录失败。')
     }
   }
 
   const requireCharacter = async (): Promise<string> => {
     const values = await form.validateFields()
     if (!values.characterName) {
-      throw new Error('请选择角色')
+      throw new Error('请选择角色。')
     }
     return values.characterName
   }
 
   return (
     <Space direction="vertical" size={20} style={{ display: 'flex' }}>
-      <div className="page-card page-card-compact">
-        <Title level={2}>数据导出</Title>
+      <div className="page-intro">
         <Paragraph>
-          将已爬取的角色数据导出为 JSON、CSV 或 Markdown 文件。默认导出目录来自设置，可在这里直接切换并打开目录。
+          将已爬取的角色数据导出为 JSON、CSV 或 Markdown 文件。默认导出目录来自设置页，也可以在这里临时切换并直接打开目录。
         </Paragraph>
       </div>
 
@@ -84,7 +83,10 @@ export function ExportData(): JSX.Element {
               </div>
               <Space wrap>
                 <Button onClick={() => void handleSelectExportDir()}>选择导出目录</Button>
-                <Button onClick={() => void runExport('open-dir', electronApi.openExportDir, '已打开导出目录')}>
+                <Button
+                  loading={busyKey === 'open-dir'}
+                  onClick={() => void runExport('open-dir', electronApi.openExportDir, '已打开导出目录。')}
+                >
                   打开导出目录
                 </Button>
               </Space>
@@ -96,13 +98,8 @@ export function ExportData(): JSX.Element {
         <Col xs={24} xl={12}>
           <Card title="单角色导出" className="content-card">
             <Form form={form} layout="vertical">
-              <Form.Item name="characterName" label="角色" rules={[{ required: true, message: '请选择角色' }]}>
-                <Select
-                  showSearch
-                  options={characterOptions}
-                  placeholder="选择一个已爬取角色"
-                  optionFilterProp="label"
-                />
+              <Form.Item name="characterName" label="角色" rules={[{ required: true, message: '请选择角色。' }]}>
+                <Select showSearch options={characterOptions} placeholder="选择一个已爬取角色" optionFilterProp="label" />
               </Form.Item>
               <Space wrap>
                 <Button
@@ -112,7 +109,7 @@ export function ExportData(): JSX.Element {
                     void runExport(
                       'single-json',
                       async () => electronApi.exportSingleJson(await requireCharacter()),
-                      '单角色 JSON 导出成功'
+                      '单角色 JSON 导出成功。'
                     )
                   }
                 >
@@ -124,7 +121,7 @@ export function ExportData(): JSX.Element {
                     void runExport(
                       'single-markdown',
                       async () => electronApi.exportSingleMarkdown(await requireCharacter()),
-                      '单角色 Markdown 导出成功'
+                      '单角色 Markdown 导出成功。'
                     )
                   }
                 >
@@ -141,13 +138,13 @@ export function ExportData(): JSX.Element {
           <Button
             type="primary"
             loading={busyKey === 'all-json'}
-            onClick={() => void runExport('all-json', electronApi.exportAllJson, '全部角色 JSON 导出成功')}
+            onClick={() => void runExport('all-json', electronApi.exportAllJson, '全部角色 JSON 导出成功。')}
           >
             导出全部角色 JSON
           </Button>
           <Button
             loading={busyKey === 'all-csv'}
-            onClick={() => void runExport('all-csv', electronApi.exportAllCsv, '全部角色 CSV 导出成功')}
+            onClick={() => void runExport('all-csv', electronApi.exportAllCsv, '全部角色 CSV 导出成功。')}
           >
             导出全部角色 CSV
           </Button>

@@ -6,6 +6,7 @@ import type {
 } from '@shared/crawler'
 import type { CharacterDetail, CharacterSummary } from '@shared/character'
 import type { ExportResult } from '@shared/export'
+import type { EnvironmentCheckResult } from '@shared/environment'
 import type { AppSettings } from '@shared/settings'
 import type { TaskDetail, TaskSummary } from '@shared/task'
 
@@ -29,6 +30,7 @@ interface YihuanApi {
   getSettings: () => Promise<AppSettings>
   saveSettings: (settings: AppSettings) => Promise<AppSettings>
   resetSettings: () => Promise<AppSettings>
+  checkEnvironment: () => Promise<EnvironmentCheckResult>
   openPath: (targetPath: string) => Promise<void>
   onCrawlerMessage: (callback: (message: CrawlerMessage) => void) => () => void
   onCrawlerDone: (callback: (payload: CrawlerDonePayload) => void) => () => void

@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron'
-import { resolveDataPaths, resolveFromProjectRoot } from '@main/services/path.service'
+import { resolveAppPath } from '@main/services/path.service'
 import { getTaskDetail, listTasks } from '@main/services/task.service'
 import { PythonService } from '@main/services/python.service'
 import { getSettings } from '@main/services/settings.service'
@@ -24,10 +24,9 @@ export function registerTasksIpc(pythonService: PythonService): void {
       throw new Error('Crawler process is already running.')
     }
     const settings = await getSettings()
-    const { projectRoot } = await resolveDataPaths()
     pythonService.resumeTask(taskId, {
       ...settings,
-      outputDir: resolveFromProjectRoot(projectRoot, settings.outputDir)
+      outputDir: resolveAppPath(settings.outputDir)
     })
   })
 
@@ -36,10 +35,9 @@ export function registerTasksIpc(pythonService: PythonService): void {
       throw new Error('Crawler process is already running.')
     }
     const settings = await getSettings()
-    const { projectRoot } = await resolveDataPaths()
     pythonService.retryFailedCharacters(taskId, {
       ...settings,
-      outputDir: resolveFromProjectRoot(projectRoot, settings.outputDir)
+      outputDir: resolveAppPath(settings.outputDir)
     })
   })
 
@@ -48,10 +46,9 @@ export function registerTasksIpc(pythonService: PythonService): void {
       throw new Error('Crawler process is already running.')
     }
     const settings = await getSettings()
-    const { projectRoot } = await resolveDataPaths()
     pythonService.retryFailedImages(taskId, {
       ...settings,
-      outputDir: resolveFromProjectRoot(projectRoot, settings.outputDir)
+      outputDir: resolveAppPath(settings.outputDir)
     })
   })
 }

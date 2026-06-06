@@ -7,7 +7,7 @@ import { CharacterDetailDrawer } from '@renderer/components/CharacterDetailDrawe
 import { useCharacterStore } from '@renderer/stores/characterStore'
 import type { CharacterSummary } from '@shared/character'
 
-const { Paragraph, Text, Title } = Typography
+const { Paragraph, Text } = Typography
 
 const columns: ColumnsType<CharacterSummary> = [
   {
@@ -126,8 +126,7 @@ export function CharacterList(): JSX.Element {
 
   return (
     <Space direction="vertical" size={20} style={{ display: 'flex' }}>
-      <div className="page-card page-card-compact">
-        <Title level={2}>角色档案</Title>
+      <div className="page-intro">
         <Paragraph>
           本页会扫描本地 `data/characters` 目录，整理出每个角色的章节、图片和失败记录，方便像浏览攻略站图鉴一样查看数据。
         </Paragraph>
@@ -156,9 +155,7 @@ export function CharacterList(): JSX.Element {
           dataSource={filteredCharacters}
           columns={[...columns, actionColumn]}
           locale={{
-            emptyText: (
-              <Empty description={keyword.trim() ? '没有匹配的角色数据' : '暂无角色数据'} />
-            )
+            emptyText: <Empty description={keyword.trim() ? '没有匹配的角色数据' : '暂无角色数据'} />
           }}
           pagination={{ pageSize: 10, showSizeChanger: false }}
           scroll={{ x: 1100 }}

@@ -1,6 +1,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname } from 'node:path'
-import { resolveDataPaths } from '@main/services/path.service'
+import { getSettingsPath } from '@main/services/path.service'
 import { defaultSettings, type AppSettings } from '@shared/settings'
 
 function normalizeSettings(settings: Partial<AppSettings> | null | undefined): AppSettings {
@@ -21,13 +21,13 @@ function normalizeSettings(settings: Partial<AppSettings> | null | undefined): A
 }
 
 async function writeSettings(settings: AppSettings): Promise<void> {
-  const { settingsFile } = await resolveDataPaths()
+  const settingsFile = getSettingsPath()
   await mkdir(dirname(settingsFile), { recursive: true })
   await writeFile(settingsFile, `${JSON.stringify(settings, null, 2)}\n`, 'utf-8')
 }
 
 export async function getSettings(): Promise<AppSettings> {
-  const { settingsFile } = await resolveDataPaths()
+  const settingsFile = getSettingsPath()
 
   try {
     const rawJson = await readFile(settingsFile, 'utf-8')

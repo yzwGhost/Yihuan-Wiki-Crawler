@@ -2,7 +2,7 @@ import { copyFile, mkdir, readFile, readdir, writeFile } from 'node:fs/promises'
 import { basename, extname, resolve } from 'node:path'
 import { shell } from 'electron'
 import { getCharacterDetail } from '@main/services/character.service'
-import { resolveDataPaths, resolveFromProjectRoot } from '@main/services/path.service'
+import { getCharactersDir, resolveAppPath } from '@main/services/path.service'
 import { getSettings } from '@main/services/settings.service'
 import type { ExportResult } from '@shared/export'
 
@@ -21,18 +21,15 @@ interface CharacterExportPayload {
 }
 
 async function ensureExportDir(): Promise<string> {
-  const { projectRoot } = await resolveDataPaths()
   const settings = await getSettings()
-  const exportDir = resolveFromProjectRoot(projectRoot, settings.exportDir)
+  const exportDir = resolveAppPath(settings.exportDir)
   await mkdir(exportDir, { recursive: true })
   return exportDir
 }
 
 async function readCharacterFileNames(): Promise<string[]> {
-  const { charactersDir } = await resolveDataPaths()
-
   try {
-    const entries = await readdir(charactersDir, { withFileTypes: true })
+    const entries = await readdir(getCharactersDir(), { withFileTypes: true })
     return entries
       .filter((entry) => entry.isFile())
       .map((entry) => entry.name)
@@ -44,8 +41,7 @@ async function readCharacterFileNames(): Promise<string[]> {
 }
 
 async function readCharacterPayload(fileName: string): Promise<CharacterExportPayload> {
-  const { charactersDir } = await resolveDataPaths()
-  const rawJson = await readFile(resolve(charactersDir, fileName), 'utf-8')
+  const rawJson = await readFile(resolve(getCharactersDir(), fileName), 'utf-8')
   return JSON.parse(rawJson) as CharacterExportPayload
 }
 
@@ -178,6 +174,9 @@ export async function exportSingleMarkdown(name: string): Promise<ExportResult> 
 
 export async function openExportDir(): Promise<ExportResult> {
   const exportDir = await ensureExportDir()
-  await shell.openPath(exportDir)
+  const error = await shell.openPath(exportDir)
+  if (error) {
+    throw new Error(error)
+  }
   return { path: exportDir }
 }

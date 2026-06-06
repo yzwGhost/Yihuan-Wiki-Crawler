@@ -6,6 +6,7 @@ import type {
 } from '@shared/crawler'
 import type { CharacterDetail, CharacterSummary } from '@shared/character'
 import type { ExportResult } from '@shared/export'
+import type { EnvironmentCheckResult } from '@shared/environment'
 import type { AppSettings } from '@shared/settings'
 import type { TaskDetail, TaskSummary } from '@shared/task'
 
@@ -29,6 +30,7 @@ export const electronApi = {
   getSettings: (): Promise<AppSettings> => window.yihuanApi.getSettings(),
   saveSettings: (settings: AppSettings): Promise<AppSettings> => window.yihuanApi.saveSettings(settings),
   resetSettings: (): Promise<AppSettings> => window.yihuanApi.resetSettings(),
+  checkEnvironment: (): Promise<EnvironmentCheckResult> => window.yihuanApi.checkEnvironment(),
   openPath: (targetPath: string): Promise<void> => window.yihuanApi.openPath(targetPath),
   onCrawlerMessage: (callback: (message: CrawlerMessage) => void): (() => void) =>
     window.yihuanApi.onCrawlerMessage(callback),

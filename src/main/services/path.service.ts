@@ -1,58 +1,121 @@
 import { app } from 'electron'
-import { stat } from 'node:fs/promises'
-import { isAbsolute, resolve } from 'node:path'
+import { existsSync } from 'node:fs'
+import { dirname, isAbsolute, join, resolve } from 'node:path'
 
 export interface DataPaths {
   projectRoot: string
+  runtimeBaseDir: string
   dataDir: string
   charactersDir: string
   imagesDir: string
-  tasksDir: string
   exportsDir: string
+  tasksDir: string
+  taskLogsDir: string
   settingsFile: string
 }
 
-async function isDirectory(targetPath: string): Promise<boolean> {
-  try {
-    const targetStat = await stat(targetPath)
-    return targetStat.isDirectory()
-  } catch {
-    return false
+function getProjectRoot(): string {
+  return process.cwd()
+}
+
+function getRuntimeBaseDir(): string {
+  return app.isPackaged ? app.getPath('userData') : getProjectRoot()
+}
+
+export function getAppDataDir(): string {
+  return join(getRuntimeBaseDir(), 'data')
+}
+
+export function getCharactersDir(): string {
+  return join(getAppDataDir(), 'characters')
+}
+
+export function getImagesDir(): string {
+  return join(getAppDataDir(), 'images')
+}
+
+export function getExportsDir(): string {
+  return join(getAppDataDir(), 'exports')
+}
+
+export function getTasksDir(): string {
+  return join(getAppDataDir(), 'tasks')
+}
+
+export function getTaskLogsDir(): string {
+  return join(getTasksDir(), 'logs')
+}
+
+export function getSettingsPath(): string {
+  return join(getAppDataDir(), 'settings.json')
+}
+
+export function getTasksFilePath(): string {
+  return join(getTasksDir(), 'tasks.json')
+}
+
+export function resolveAppPath(targetPath: string): string {
+  return isAbsolute(targetPath) ? targetPath : resolve(getRuntimeBaseDir(), targetPath)
+}
+
+export function resolveProjectPath(targetPath: string): string {
+  return isAbsolute(targetPath) ? targetPath : resolve(getProjectRoot(), targetPath)
+}
+
+export function getPythonExecutablePath(configuredPythonPath?: string): string {
+  if (app.isPackaged) {
+    return join(process.resourcesPath, 'python', 'yihuan-crawler.exe')
   }
+
+  const projectRoot = getProjectRoot()
+  const localPython = join(projectRoot, 'python', '.venv', 'Scripts', 'python.exe')
+  if (existsSync(localPython)) {
+    return localPython
+  }
+
+  const rootPython = join(projectRoot, '.venv', 'Scripts', 'python.exe')
+  if (existsSync(rootPython)) {
+    return rootPython
+  }
+
+  if (!configuredPythonPath) {
+    return 'python'
+  }
+
+  const looksLikePath =
+    configuredPythonPath.includes('\\') ||
+    configuredPythonPath.includes('/') ||
+    configuredPythonPath.startsWith('.')
+
+  return looksLikePath ? resolveProjectPath(configuredPythonPath) : configuredPythonPath
+}
+
+export function getPythonCrawlerScriptPath(): string {
+  if (app.isPackaged) {
+    return join(process.resourcesPath, 'python', 'yihuan-crawler.exe')
+  }
+
+  return join(getProjectRoot(), 'python', 'crawler', 'main.py')
+}
+
+export function getPackagedPythonDir(): string {
+  return app.isPackaged ? join(process.resourcesPath, 'python') : join(getProjectRoot(), 'resources', 'python')
+}
+
+export function getDataBaseDir(): string {
+  return dirname(getAppDataDir())
 }
 
 export async function resolveDataPaths(): Promise<DataPaths> {
-  const appPath = app.getAppPath()
-  const projectRootCandidates = [process.cwd(), appPath, resolve(appPath, '..'), resolve(appPath, '..', '..')]
-
-  for (const projectRoot of projectRootCandidates) {
-    const dataDir = resolve(projectRoot, 'data')
-    if (await isDirectory(dataDir)) {
-      return {
-        projectRoot,
-        dataDir,
-        charactersDir: resolve(dataDir, 'characters'),
-        imagesDir: resolve(dataDir, 'images'),
-        tasksDir: resolve(dataDir, 'tasks'),
-        exportsDir: resolve(dataDir, 'exports'),
-        settingsFile: resolve(dataDir, 'settings.json')
-      }
-    }
-  }
-
-  const projectRoot = projectRootCandidates[0]
-  const dataDir = resolve(projectRoot, 'data')
   return {
-    projectRoot,
-    dataDir,
-    charactersDir: resolve(dataDir, 'characters'),
-    imagesDir: resolve(dataDir, 'images'),
-    tasksDir: resolve(dataDir, 'tasks'),
-    exportsDir: resolve(dataDir, 'exports'),
-    settingsFile: resolve(dataDir, 'settings.json')
+    projectRoot: getProjectRoot(),
+    runtimeBaseDir: getRuntimeBaseDir(),
+    dataDir: getAppDataDir(),
+    charactersDir: getCharactersDir(),
+    imagesDir: getImagesDir(),
+    exportsDir: getExportsDir(),
+    tasksDir: getTasksDir(),
+    taskLogsDir: getTaskLogsDir(),
+    settingsFile: getSettingsPath()
   }
-}
-
-export function resolveFromProjectRoot(projectRoot: string, targetPath: string): string {
-  return isAbsolute(targetPath) ? targetPath : resolve(projectRoot, targetPath)
 }

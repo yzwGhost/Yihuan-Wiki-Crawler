@@ -39,11 +39,11 @@ const pageContent: Record<PageKey, { title: string; description: string }> = {
   },
   tasks: {
     title: '爬取任务',
-    description: '配置抓取参数并实时查看日志输出。'
+    description: '配置抓取参数，并实时查看 Python 爬虫输出的日志与进度。'
   },
   taskHistory: {
     title: '任务历史',
-    description: '查看历史抓取记录，继续中断任务，或重试失败角色与图片。'
+    description: '查看历史抓取记录，继续未完成任务，或重试失败角色与失败图片。'
   },
   profiles: {
     title: '角色资料',
@@ -59,7 +59,7 @@ const pageContent: Record<PageKey, { title: string; description: string }> = {
   },
   settings: {
     title: '设置',
-    description: '统一管理 Python、输出目录和默认抓取参数。'
+    description: '统一管理 Python、输出目录、导出目录和默认抓取参数。'
   }
 }
 
@@ -121,6 +121,7 @@ export function AppLayout(): JSX.Element {
           onClick={({ key }) => setActivePage(key as PageKey)}
         />
       </Sider>
+
       <Layout className="app-main">
         <Header className="app-header">
           <div className="header-copy">
@@ -139,7 +140,10 @@ export function AppLayout(): JSX.Element {
             </Button>
           </Space>
         </Header>
-        <Content className="app-content">{pageNode}</Content>
+
+        <Content className="app-content">
+          <div className="page-scroll">{pageNode}</div>
+        </Content>
       </Layout>
     </Layout>
   )

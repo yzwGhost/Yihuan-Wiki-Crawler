@@ -1,9 +1,9 @@
 import { stat } from 'node:fs/promises'
-import { isAbsolute, resolve } from 'node:path'
 import { ipcMain, shell } from 'electron'
+import { resolveAppPath } from '@main/services/path.service'
 
 function resolveLocalPath(targetPath: string): string {
-  return isAbsolute(targetPath) ? targetPath : resolve(process.cwd(), targetPath)
+  return resolveAppPath(targetPath)
 }
 
 export function registerFileIpc(): void {

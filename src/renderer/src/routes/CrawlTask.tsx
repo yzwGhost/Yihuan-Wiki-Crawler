@@ -22,7 +22,7 @@ import { useCrawlerStore } from '@renderer/stores/crawlerStore'
 import { useSettingsStore } from '@renderer/stores/settingsStore'
 import type { CrawlerStartOptions } from '@shared/crawler'
 
-const { Paragraph, Text, Title } = Typography
+const { Paragraph, Text } = Typography
 
 interface CrawlTaskFormValues extends CrawlerStartOptions {}
 
@@ -170,7 +170,7 @@ export function CrawlTask(): JSX.Element {
       })
     } catch (error) {
       setRunning(false)
-      const errorMessage = error instanceof Error ? error.message : '启动失败'
+      const errorMessage = error instanceof Error ? error.message : '启动失败。'
       appendLog({
         id: `${Date.now()}-start-error`,
         level: 'error',
@@ -196,7 +196,7 @@ export function CrawlTask(): JSX.Element {
         timestamp: new Date().toISOString()
       })
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : '停止失败'
+      const errorMessage = error instanceof Error ? error.message : '停止失败。'
       appendLog({
         id: `${Date.now()}-stop-error`,
         level: 'error',
@@ -222,7 +222,7 @@ export function CrawlTask(): JSX.Element {
         clickWaitMs: values.clickWait,
         resume: Boolean(values.resume)
       })
-      void message.success('当前参数已保存为默认设置')
+      void message.success('当前参数已保存为默认设置。')
     } catch (error) {
       if (error instanceof Error) {
         void message.error(error.message)
@@ -232,9 +232,10 @@ export function CrawlTask(): JSX.Element {
 
   return (
     <Space direction="vertical" size={20} style={{ display: 'flex' }}>
-      <div className="page-card page-card-compact">
-        <Title level={2}>爬取任务</Title>
-        <Paragraph>这里可以启动单角色或全部角色的真实爬取，并实时查看 Python 输出的日志与进度。</Paragraph>
+      <div className="page-intro">
+        <Paragraph>
+          这里可以启动单角色或全部角色的真实爬取，并实时查看 Python 输出的日志与进度。
+        </Paragraph>
       </div>
 
       <Row gutter={[20, 20]}>
@@ -251,7 +252,7 @@ export function CrawlTask(): JSX.Element {
               </Form.Item>
 
               {mode === 'single' ? (
-                <Form.Item label="角色 URL" name="url" rules={[{ required: true, message: '单角色模式下请输入 URL' }]}>
+                <Form.Item label="角色 URL" name="url" rules={[{ required: true, message: '单角色模式下请输入 URL。' }]}>
                   <Input placeholder="https://www.gamekee.com/yh/669570.html" />
                 </Form.Item>
               ) : null}

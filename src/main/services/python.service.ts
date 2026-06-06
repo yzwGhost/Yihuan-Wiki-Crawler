@@ -1,8 +1,9 @@
 import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process'
 import { existsSync } from 'node:fs'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
 import readline from 'node:readline'
 import { app } from 'electron'
+import { getPythonCrawlerScriptPath, getPythonExecutablePath } from '@main/services/path.service'
 import type {
   CrawlerDonePayload,
   CrawlerErrorPayload,
@@ -24,6 +25,50 @@ type PythonRuntimeSettings = Pick<
 
 function now(): string {
   return new Date().toISOString()
+}
+
+function buildCommand(extraArgs: string[], pythonPath?: string): { executable: string; args: string[] } {
+  const executable = getPythonExecutablePath(pythonPath || process.env.YIHUAN_PYTHON_PATH)
+  const args = app.isPackaged ? extraArgs : [getPythonCrawlerScriptPath(), ...extraArgs]
+  return { executable, args }
+}
+
+function getPythonWorkingDirectory(): string {
+  return app.isPackaged ? process.resourcesPath : dirname(getPythonCrawlerScriptPath())
+}
+
+function ensurePythonExecutableExists(executable: string): void {
+  const isCommandName = !executable.includes('\\') && !executable.includes('/')
+  if (isCommandName) {
+    return
+  }
+
+  if (existsSync(executable)) {
+    return
+  }
+
+  if (app.isPackaged) {
+    throw new Error(
+      `未找到打包后的爬虫可执行文件：${executable}。请不要单独拷贝主程序 exe；请重新安装最新安装包，或直接运行完整的 win-unpacked 目录。`
+    )
+  }
+
+  throw new Error(`未找到 Python 可执行文件：${executable}`)
+}
+
+function getPythonProcessEnv(): NodeJS.ProcessEnv {
+  const localAppData = process.env.LOCALAPPDATA
+  const playwrightBrowsersPath =
+    localAppData && existsSync(join(localAppData, 'ms-playwright'))
+      ? join(localAppData, 'ms-playwright')
+      : process.env.PLAYWRIGHT_BROWSERS_PATH
+
+  return {
+    ...process.env,
+    PYTHONIOENCODING: 'utf-8',
+    PYTHONUTF8: '1',
+    ...(playwrightBrowsersPath ? { PLAYWRIGHT_BROWSERS_PATH: playwrightBrowsersPath } : {})
+  }
 }
 
 export class PythonService {
@@ -67,64 +112,73 @@ export class PythonService {
   }
 
   resumeTask(taskId: string, settings: PythonRuntimeSettings): void {
-    this.startWithArgs([
-      '--mode',
-      'all',
-      '--output',
-      settings.outputDir,
-      '--download-images',
-      String(settings.downloadImages),
-      '--headless',
-      String(settings.headless),
-      '--max-click',
-      String(settings.maxClick),
-      '--page-wait',
-      String(settings.pageWaitMs),
-      '--click-wait',
-      String(settings.clickWaitMs),
-      '--resume',
-      'true',
-      '--resume-task-id',
-      taskId
-    ], settings.pythonPath)
+    this.startWithArgs(
+      [
+        '--mode',
+        'all',
+        '--output',
+        settings.outputDir,
+        '--download-images',
+        String(settings.downloadImages),
+        '--headless',
+        String(settings.headless),
+        '--max-click',
+        String(settings.maxClick),
+        '--page-wait',
+        String(settings.pageWaitMs),
+        '--click-wait',
+        String(settings.clickWaitMs),
+        '--resume',
+        'true',
+        '--resume-task-id',
+        taskId
+      ],
+      settings.pythonPath
+    )
   }
 
   retryFailedCharacters(taskId: string, settings: PythonRuntimeSettings): void {
-    this.startWithArgs([
-      '--output',
-      settings.outputDir,
-      '--download-images',
-      String(settings.downloadImages),
-      '--headless',
-      String(settings.headless),
-      '--max-click',
-      String(settings.maxClick),
-      '--page-wait',
-      String(settings.pageWaitMs),
-      '--click-wait',
-      String(settings.clickWaitMs),
-      '--retry-failed-task',
-      taskId
-    ], settings.pythonPath)
+    this.startWithArgs(
+      [
+        '--output',
+        settings.outputDir,
+        '--download-images',
+        String(settings.downloadImages),
+        '--headless',
+        String(settings.headless),
+        '--max-click',
+        String(settings.maxClick),
+        '--page-wait',
+        String(settings.pageWaitMs),
+        '--click-wait',
+        String(settings.clickWaitMs),
+        '--retry-failed-task',
+        taskId
+      ],
+      settings.pythonPath
+    )
   }
 
   retryFailedImages(taskId: string, settings: PythonRuntimeSettings): void {
-    this.startWithArgs([
-      '--output',
-      settings.outputDir,
-      '--download-images',
-      String(settings.downloadImages),
-      '--headless',
-      String(settings.headless),
-      '--max-click',
-      String(settings.maxClick),
-      '--page-wait',
-      String(settings.pageWaitMs),
-      '--click-wait',
-      String(settings.clickWaitMs),
-      '--retry-failed-images',
-      taskId
-    ], settings.pythonPath)
+    this.startWithArgs(
+      [
+        '--output',
+        settings.outputDir,
+        '--download-images',
+        String(settings.downloadImages),
+        '--headless',
+        String(settings.headless),
+        '--max-click',
+        String(settings.maxClick),
+        '--page-wait',
+        String(settings.pageWaitMs),
+        '--click-wait',
+        String(settings.clickWaitMs),
+        '--retry-failed-images',
+        taskId
+      ],
+      settings.pythonPath
+    )
   }
 
   stop(): void {
@@ -136,34 +190,20 @@ export class PythonService {
     this.crawlerProcess.kill()
   }
 
-  private resolveCrawlerScriptPath(): string {
-    const directPath = join(app.getAppPath(), 'python', 'crawler', 'main.py')
-    if (existsSync(directPath)) {
-      return directPath
-    }
-
-    return join(process.cwd(), 'python', 'crawler', 'main.py')
-  }
-
   private startWithArgs(extraArgs: string[], pythonPath?: string): void {
     if (this.crawlerProcess) {
       throw new Error('Crawler process is already running.')
     }
 
-    const scriptPath = this.resolveCrawlerScriptPath()
-    const pythonExecutable = pythonPath || process.env.YIHUAN_PYTHON_PATH || 'python'
-    const args = [scriptPath, ...extraArgs]
+    const { executable, args } = buildCommand(extraArgs, pythonPath)
+    ensurePythonExecutableExists(executable)
 
     this.stopping = false
     this.completed = false
-    this.crawlerProcess = spawn(pythonExecutable, args, {
-      cwd: app.getAppPath(),
+    this.crawlerProcess = spawn(executable, args, {
+      cwd: getPythonWorkingDirectory(),
       stdio: ['ignore', 'pipe', 'pipe'],
-      env: {
-        ...process.env,
-        PYTHONIOENCODING: 'utf-8',
-        PYTHONUTF8: '1'
-      }
+      env: getPythonProcessEnv()
     })
 
     this.crawlerProcess.stdout.setEncoding('utf8')
@@ -290,4 +330,41 @@ export class PythonService {
       }
     })
   }
+}
+
+export async function spawnPythonProcess(
+  extraArgs: string[],
+  pythonPath?: string
+): Promise<{ code: number | null; stdout: string; stderr: string }> {
+  const { executable, args } = buildCommand(extraArgs, pythonPath)
+  ensurePythonExecutableExists(executable)
+
+  return new Promise((resolve, reject) => {
+    const child = spawn(executable, args, {
+      cwd: getPythonWorkingDirectory(),
+      stdio: ['ignore', 'pipe', 'pipe'],
+      env: getPythonProcessEnv()
+    })
+
+    let stdout = ''
+    let stderr = ''
+
+    child.stdout.setEncoding('utf8')
+    child.stderr.setEncoding('utf8')
+    child.stdout.on('data', (chunk) => {
+      stdout += chunk
+    })
+    child.stderr.on('data', (chunk) => {
+      stderr += chunk
+    })
+    child.on('error', reject)
+    child.on('close', (code) => {
+      if (code !== 0) {
+        reject(new Error(stderr.trim() || stdout.trim() || `Python process exited with code ${code ?? 'unknown'}.`))
+        return
+      }
+
+      resolve({ code, stdout, stderr })
+    })
+  })
 }

@@ -6,7 +6,7 @@ export default defineConfig({
   main: {
     plugins: [externalizeDepsPlugin()],
     build: {
-      outDir: 'out/main'
+      outDir: resolve('out/main')
     },
     resolve: {
       alias: {
@@ -18,7 +18,7 @@ export default defineConfig({
   preload: {
     plugins: [externalizeDepsPlugin()],
     build: {
-      outDir: 'out/preload'
+      outDir: resolve('out/preload')
     },
     resolve: {
       alias: {
@@ -29,6 +29,7 @@ export default defineConfig({
   },
   renderer: {
     root: 'src/renderer',
+    base: './',
     plugins: [react()],
     resolve: {
       alias: {
@@ -37,7 +38,7 @@ export default defineConfig({
       }
     },
     build: {
-      outDir: '../../out/renderer'
+      outDir: resolve('out/renderer')
     }
   }
 })

@@ -73,11 +73,7 @@ export function TaskDetailDrawer({
       key: 'success',
       label: '成功 URL',
       children: detail?.success_urls?.length ? (
-        <List
-          size="small"
-          dataSource={detail.success_urls}
-          renderItem={(item) => <List.Item>{item}</List.Item>}
-        />
+        <List size="small" dataSource={detail.success_urls} renderItem={(item) => <List.Item>{item}</List.Item>} />
       ) : (
         <Empty description="暂无成功 URL" />
       )

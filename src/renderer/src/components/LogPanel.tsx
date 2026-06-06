@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { Typography } from 'antd'
 import { useCrawlerStore } from '@renderer/stores/crawlerStore'
 
@@ -21,9 +22,19 @@ function levelClass(level: string): string {
 
 export function LogPanel(): JSX.Element {
   const logs = useCrawlerStore((state) => state.logs)
+  const panelRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    const panel = panelRef.current
+    if (!panel) {
+      return
+    }
+
+    panel.scrollTop = panel.scrollHeight
+  }, [logs])
 
   return (
-    <div className="log-panel">
+    <div ref={panelRef} className="log-panel app-scrollbar">
       {logs.length === 0 ? (
         <Text type="secondary">日志会在这里实时显示。</Text>
       ) : (

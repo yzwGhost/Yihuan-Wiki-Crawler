@@ -1,54 +1,14 @@
-import { app } from 'electron'
-import { readFile, stat } from 'node:fs/promises'
-import { resolve } from 'node:path'
+import { readFile } from 'node:fs/promises'
+import { getTasksFilePath } from '@main/services/path.service'
 import type { TaskDetail, TaskSummary } from '@shared/task'
 
 interface TaskFilePayload extends Omit<TaskDetail, 'rawJson'> {
   rawJson?: string
 }
 
-async function isDirectory(targetPath: string): Promise<boolean> {
-  try {
-    const directoryStat = await stat(targetPath)
-    return directoryStat.isDirectory()
-  } catch {
-    return false
-  }
-}
-
-async function resolveTasksPaths(): Promise<{ dataDir: string; tasksDir: string; tasksFile: string }> {
-  const appPath = app.getAppPath()
-  const projectRootCandidates = [
-    process.cwd(),
-    appPath,
-    resolve(appPath, '..'),
-    resolve(appPath, '..', '..')
-  ]
-
-  for (const projectRoot of projectRootCandidates) {
-    const dataDir = resolve(projectRoot, 'data')
-    const tasksDir = resolve(dataDir, 'tasks')
-    if (await isDirectory(tasksDir)) {
-      return {
-        dataDir,
-        tasksDir,
-        tasksFile: resolve(tasksDir, 'tasks.json')
-      }
-    }
-  }
-
-  const fallbackDataDir = resolve(projectRootCandidates[0], 'data')
-  return {
-    dataDir: fallbackDataDir,
-    tasksDir: resolve(fallbackDataDir, 'tasks'),
-    tasksFile: resolve(fallbackDataDir, 'tasks', 'tasks.json')
-  }
-}
-
 async function readTasks(): Promise<TaskFilePayload[]> {
-  const { tasksFile } = await resolveTasksPaths()
   try {
-    const rawJson = await readFile(tasksFile, 'utf-8')
+    const rawJson = await readFile(getTasksFilePath(), 'utf-8')
     const normalizedJson = rawJson.replace(/^\uFEFF/, '')
     const parsed = JSON.parse(normalizedJson)
     return Array.isArray(parsed) ? (parsed as TaskFilePayload[]) : []
@@ -74,9 +34,7 @@ function toSummary(task: TaskFilePayload): TaskSummary {
 
 export async function listTasks(): Promise<TaskSummary[]> {
   const tasks = await readTasks()
-  return tasks
-    .map(toSummary)
-    .sort((left, right) => right.started_at.localeCompare(left.started_at))
+  return tasks.map(toSummary).sort((left, right) => right.started_at.localeCompare(left.started_at))
 }
 
 export async function getTaskDetail(taskId: string): Promise<TaskDetail> {

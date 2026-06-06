@@ -6,6 +6,7 @@ import type {
   CrawlerStartOptions
 } from '@shared/crawler'
 import type { ExportResult } from '@shared/export'
+import type { EnvironmentCheckResult } from '@shared/environment'
 import type { CharacterDetail, CharacterSummary } from '@shared/character'
 import type { AppSettings } from '@shared/settings'
 import type { TaskDetail, TaskSummary } from '@shared/task'
@@ -43,6 +44,7 @@ const yihuanApi = {
   getSettings: async (): Promise<AppSettings> => ipcRenderer.invoke('settings:get'),
   saveSettings: async (settings: AppSettings): Promise<AppSettings> => ipcRenderer.invoke('settings:save', settings),
   resetSettings: async (): Promise<AppSettings> => ipcRenderer.invoke('settings:reset'),
+  checkEnvironment: async (): Promise<EnvironmentCheckResult> => ipcRenderer.invoke('env:check'),
   openPath: async (targetPath: string): Promise<void> => ipcRenderer.invoke('file:openPath', targetPath),
   onCrawlerMessage: (callback: (message: CrawlerMessage) => void): (() => void) =>
     subscribe('crawler:message', callback),

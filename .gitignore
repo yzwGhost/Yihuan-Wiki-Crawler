@@ -4,6 +4,12 @@ out
 data/images
 data/characters
 data/exports
+data/tasks
+data/settings.json
 python/.venv
 __pycache__
 .venv
+resources/python/yihuan-crawler.exe
+resources/python/*.tmp
+python/build
+.tmp

@@ -7,7 +7,7 @@ import { TaskDetailDrawer } from '@renderer/components/TaskDetailDrawer'
 import { useTaskStore } from '@renderer/stores/taskStore'
 import type { TaskSummary } from '@shared/task'
 
-const { Paragraph, Text, Title } = Typography
+const { Paragraph, Text } = Typography
 
 function statusColor(status: TaskSummary['status']): string {
   switch (status) {
@@ -56,7 +56,7 @@ export function TaskHistory(): JSX.Element {
     try {
       await loadTasks()
     } catch (error) {
-      void message.error(error instanceof Error ? error.message : '加载任务历史失败')
+      void message.error(error instanceof Error ? error.message : '加载任务历史失败。')
     }
   }
 
@@ -64,7 +64,7 @@ export function TaskHistory(): JSX.Element {
     try {
       await openTaskDetail(taskId)
     } catch (error) {
-      void message.error(error instanceof Error ? error.message : '加载任务详情失败')
+      void message.error(error instanceof Error ? error.message : '加载任务详情失败。')
     }
   }
 
@@ -74,7 +74,7 @@ export function TaskHistory(): JSX.Element {
       void message.success(successText)
       await loadTasks()
     } catch (error) {
-      void message.error(error instanceof Error ? error.message : '操作失败')
+      void message.error(error instanceof Error ? error.message : '操作失败。')
     }
   }
 
@@ -144,21 +144,19 @@ export function TaskHistory(): JSX.Element {
           <Button
             size="small"
             disabled={record.mode !== 'all' || record.status === 'completed'}
-            onClick={() => void handleAction(() => electronApi.resumeTask(record.task_id), '已开始继续任务')}
+            onClick={() => void handleAction(() => electronApi.resumeTask(record.task_id), '已开始继续任务。')}
           >
             继续任务
           </Button>
           <Button
             size="small"
-            onClick={() =>
-              void handleAction(() => electronApi.retryFailedCharacters(record.task_id), '已开始重试失败角色')
-            }
+            onClick={() => void handleAction(() => electronApi.retryFailedCharacters(record.task_id), '已开始重试失败角色。')}
           >
             重试失败角色
           </Button>
           <Button
             size="small"
-            onClick={() => void handleAction(() => electronApi.retryFailedImages(record.task_id), '已开始重试失败图片')}
+            onClick={() => void handleAction(() => electronApi.retryFailedImages(record.task_id), '已开始重试失败图片。')}
           >
             重试失败图片
           </Button>
@@ -171,7 +169,7 @@ export function TaskHistory(): JSX.Element {
                   throw new Error('当前任务没有日志文件。')
                 }
                 await electronApi.openPath(detail.log_path)
-              }, '已打开任务日志')
+              }, '已打开任务日志。')
             }
           >
             打开任务日志
@@ -183,10 +181,9 @@ export function TaskHistory(): JSX.Element {
 
   return (
     <Space direction="vertical" size={20} style={{ display: 'flex' }}>
-      <div className="page-card page-card-compact">
-        <Title level={2}>任务历史</Title>
+      <div className="page-intro">
         <Paragraph>
-          这里会展示本地 `data/tasks/tasks.json` 中记录的爬取任务，可查看详情、继续未完成任务，或重试失败角色与失败图片。
+          这里会显示本地 `data/tasks/tasks.json` 中记录的爬取任务，可查看详情、继续未完成任务，或重试失败角色与失败图片。
         </Paragraph>
         <Button onClick={() => void handleRefresh()} loading={loading}>
           刷新任务历史

@@ -1,5 +1,5 @@
-import { dialog, ipcMain } from 'electron'
-import { resolveDataPaths, resolveFromProjectRoot } from '@main/services/path.service'
+import { ipcMain, dialog } from 'electron'
+import { resolveAppPath } from '@main/services/path.service'
 import {
   exportAllCsv,
   exportAllJson,
@@ -24,10 +24,10 @@ export function registerExportIpc(): void {
   ipcMain.handle('export:openExportDir', async () => openExportDir())
   ipcMain.handle('export:selectExportDir', async () => {
     const settings = await getSettings()
-    const { projectRoot } = await resolveDataPaths()
+    const defaultPath = resolveAppPath(settings.exportDir)
     const result = await dialog.showOpenDialog({
       title: '选择导出目录',
-      defaultPath: resolveFromProjectRoot(projectRoot, settings.exportDir),
+      defaultPath,
       properties: ['openDirectory', 'createDirectory']
     })
 

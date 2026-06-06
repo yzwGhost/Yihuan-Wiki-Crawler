@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import atexit
 import json
+import os
 import signal
 import sys
 from dataclasses import asdict, dataclass
@@ -51,6 +52,22 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8")
+
+
+def ensure_playwright_browsers_path() -> None:
+    if os.environ.get("PLAYWRIGHT_BROWSERS_PATH"):
+        return
+
+    local_app_data = os.environ.get("LOCALAPPDATA")
+    if not local_app_data:
+        return
+
+    browsers_dir = Path(local_app_data) / "ms-playwright"
+    if browsers_dir.exists():
+        os.environ["PLAYWRIGHT_BROWSERS_PATH"] = str(browsers_dir)
+
+
+ensure_playwright_browsers_path()
 
 
 @dataclass
@@ -108,6 +125,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--resume-task-id")
     parser.add_argument("--retry-failed-task")
     parser.add_argument("--retry-failed-images")
+    parser.add_argument("--env-check", action="store_true")
     return parser.parse_args()
 
 
@@ -602,6 +620,32 @@ def main() -> int:
     global TASK_REPOSITORY
     args = parse_args()
     options = build_options(args)
+
+    if args.env_check:
+        try:
+            with sync_playwright() as playwright:
+                browser = playwright.chromium.launch(headless=True)
+                browser.close()
+            emit_json(
+                {
+                    "type": "env_check",
+                    "playwright_available": True,
+                    "message": "Playwright Chromium 可用。",
+                    "timestamp": now(),
+                }
+            )
+            return 0
+        except Exception as error:  # noqa: BLE001
+            emit_json(
+                {
+                    "type": "env_check",
+                    "playwright_available": False,
+                    "message": f"Playwright Chromium 不可用：{error}",
+                    "timestamp": now(),
+                }
+            )
+            return 0
+
     TASK_REPOSITORY = TaskRepository(Path(options.output_dir).resolve())
 
     if args.retry_failed_task:

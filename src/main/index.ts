@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'node:path'
 import { registerCharactersIpc } from '@main/ipc/characters.ipc'
 import { pythonService, registerCrawlerIpc } from '@main/ipc/crawler.ipc'
+import { registerEnvIpc } from '@main/ipc/env.ipc'
 import { registerExportIpc } from '@main/ipc/export.ipc'
 import { registerFileIpc } from '@main/ipc/file.ipc'
 import { registerSettingsIpc } from '@main/ipc/settings.ipc'
@@ -41,6 +42,7 @@ app.whenReady().then(() => {
 
   registerCrawlerIpc()
   registerCharactersIpc()
+  registerEnvIpc()
   registerFileIpc()
   registerExportIpc()
   registerSettingsIpc()

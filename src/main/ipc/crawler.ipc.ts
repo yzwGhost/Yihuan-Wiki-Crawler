@@ -1,5 +1,5 @@
 import { BrowserWindow, ipcMain } from 'electron'
-import { resolveFromProjectRoot, resolveDataPaths } from '@main/services/path.service'
+import { resolveAppPath } from '@main/services/path.service'
 import { PythonService } from '@main/services/python.service'
 import { getSettings } from '@main/services/settings.service'
 import type {
@@ -39,11 +39,10 @@ export function registerCrawlerIpc(): void {
     }
 
     const settings = await getSettings()
-    const { projectRoot } = await resolveDataPaths()
 
     pythonService.start({
       ...options,
-      outputDir: resolveFromProjectRoot(projectRoot, options.outputDir || settings.outputDir),
+      outputDir: resolveAppPath(options.outputDir || settings.outputDir),
       downloadImages: options.downloadImages,
       headless: options.headless,
       maxClick: options.maxClick,
