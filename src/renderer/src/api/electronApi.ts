@@ -9,6 +9,7 @@ import type { ExportResult } from '@shared/export'
 import type { EnvironmentCheckResult } from '@shared/environment'
 import type { AppSettings } from '@shared/settings'
 import type { TaskDetail, TaskSummary } from '@shared/task'
+import type { WindowState } from '@shared/window'
 
 export const electronApi = {
   ping: (message: string): Promise<string> => window.yihuanApi.ping(message),
@@ -32,10 +33,16 @@ export const electronApi = {
   resetSettings: (): Promise<AppSettings> => window.yihuanApi.resetSettings(),
   checkEnvironment: (): Promise<EnvironmentCheckResult> => window.yihuanApi.checkEnvironment(),
   openPath: (targetPath: string): Promise<void> => window.yihuanApi.openPath(targetPath),
+  minimizeWindow: (): Promise<void> => window.yihuanApi.minimizeWindow(),
+  toggleMaximizeWindow: (): Promise<void> => window.yihuanApi.toggleMaximizeWindow(),
+  closeWindow: (): Promise<void> => window.yihuanApi.closeWindow(),
+  getWindowState: (): Promise<WindowState> => window.yihuanApi.getWindowState(),
   onCrawlerMessage: (callback: (message: CrawlerMessage) => void): (() => void) =>
     window.yihuanApi.onCrawlerMessage(callback),
   onCrawlerDone: (callback: (payload: CrawlerDonePayload) => void): (() => void) =>
     window.yihuanApi.onCrawlerDone(callback),
   onCrawlerError: (callback: (payload: CrawlerErrorPayload) => void): (() => void) =>
-    window.yihuanApi.onCrawlerError(callback)
+    window.yihuanApi.onCrawlerError(callback),
+  onWindowStateChange: (callback: (state: WindowState) => void): (() => void) =>
+    window.yihuanApi.onWindowStateChange(callback)
 }

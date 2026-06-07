@@ -9,6 +9,7 @@ import type { ExportResult } from '@shared/export'
 import type { EnvironmentCheckResult } from '@shared/environment'
 import type { AppSettings } from '@shared/settings'
 import type { TaskDetail, TaskSummary } from '@shared/task'
+import type { WindowState } from '@shared/window'
 
 interface YihuanApi {
   ping: (message: string) => Promise<string>
@@ -32,9 +33,14 @@ interface YihuanApi {
   resetSettings: () => Promise<AppSettings>
   checkEnvironment: () => Promise<EnvironmentCheckResult>
   openPath: (targetPath: string) => Promise<void>
+  minimizeWindow: () => Promise<void>
+  toggleMaximizeWindow: () => Promise<void>
+  closeWindow: () => Promise<void>
+  getWindowState: () => Promise<WindowState>
   onCrawlerMessage: (callback: (message: CrawlerMessage) => void) => () => void
   onCrawlerDone: (callback: (payload: CrawlerDonePayload) => void) => () => void
   onCrawlerError: (callback: (payload: CrawlerErrorPayload) => void) => () => void
+  onWindowStateChange: (callback: (state: WindowState) => void) => () => void
 }
 
 declare global {

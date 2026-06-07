@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { ConfigProvider } from 'antd'
+import { App as AntdApp, ConfigProvider } from 'antd'
 import { useSettingsStore } from './stores/settingsStore'
 import { guideTheme } from './theme/guideTheme'
 import { AppLayout } from './components/AppLayout'
@@ -13,7 +13,9 @@ function App(): JSX.Element {
 
   return (
     <ConfigProvider theme={guideTheme}>
-      <AppLayout />
+      <AntdApp>
+        <AppLayout />
+      </AntdApp>
     </ConfigProvider>
   )
 }

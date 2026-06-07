@@ -7,6 +7,7 @@ import { registerExportIpc } from '@main/ipc/export.ipc'
 import { registerFileIpc } from '@main/ipc/file.ipc'
 import { registerSettingsIpc } from '@main/ipc/settings.ipc'
 import { registerTasksIpc } from '@main/ipc/tasks.ipc'
+import { attachWindowStateEvents, registerWindowIpc } from '@main/ipc/window.ipc'
 import { ensureAppDataStructure } from '@main/services/path.service'
 
 function createWindow(): void {
@@ -17,6 +18,7 @@ function createWindow(): void {
     minHeight: 760,
     show: false,
     autoHideMenuBar: true,
+    titleBarStyle: 'hidden',
     webPreferences: {
       preload: join(__dirname, '../preload/index.mjs'),
       contextIsolation: true,
@@ -28,6 +30,8 @@ function createWindow(): void {
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
   })
+
+  attachWindowStateEvents(mainWindow)
 
   if (process.env.ELECTRON_RENDERER_URL) {
     void mainWindow.loadURL(process.env.ELECTRON_RENDERER_URL)
@@ -50,6 +54,7 @@ app.whenReady().then(async () => {
   registerExportIpc()
   registerSettingsIpc()
   registerTasksIpc(pythonService)
+  registerWindowIpc()
   createWindow()
 
   app.on('activate', () => {

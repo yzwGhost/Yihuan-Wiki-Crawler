@@ -11,9 +11,11 @@ import {
 import { Button, Layout, Menu, Space, Tag, Typography } from 'antd'
 import dayjs from 'dayjs'
 import { electronApi } from '@renderer/api/electronApi'
+import { WindowToolbar } from '@renderer/components/WindowToolbar'
 import { CharacterList } from '@renderer/routes/CharacterList'
 import { CrawlTask } from '@renderer/routes/CrawlTask'
 import { ExportData } from '@renderer/routes/ExportData'
+import { ImageManager } from '@renderer/routes/ImageManager'
 import { PlaceholderPage } from '@renderer/routes/PlaceholderPage'
 import { Settings } from '@renderer/routes/Settings'
 import { TaskHistory } from '@renderer/routes/TaskHistory'
@@ -89,6 +91,9 @@ export function AppLayout(): JSX.Element {
     if (activePage === 'profiles') {
       return <CharacterList />
     }
+    if (activePage === 'images') {
+      return <ImageManager />
+    }
     if (activePage === 'taskHistory') {
       return <TaskHistory />
     }
@@ -103,47 +108,51 @@ export function AppLayout(): JSX.Element {
 
   return (
     <Layout className="app-shell">
-      <Sider width={248} className="app-sider">
-        <div className="brand-block">
-          <Tag className="brand-badge">Yihuan Wiki Crawler</Tag>
-          <Title level={3} className="brand-title">
-            Yihuan Guide Desk
-          </Title>
-          <Paragraph className="brand-subtitle">
-            简洁、直观、面向角色资料整理的桌面工作台。
-          </Paragraph>
-        </div>
-        <Menu
-          theme="dark"
-          mode="inline"
-          selectedKeys={[activePage]}
-          items={menuItems}
-          onClick={({ key }) => setActivePage(key as PageKey)}
-        />
-      </Sider>
+      <WindowToolbar pageTitle={currentPage.title} />
 
-      <Layout className="app-main">
-        <Header className="app-header">
-          <div className="header-copy">
-            <Text className="header-kicker">攻略站控制台</Text>
-            <Title level={3} className="header-title">
-              {currentPage.title}
+      <Layout className="app-shell-body">
+        <Sider width={248} className="app-sider">
+          <div className="brand-block">
+            <Tag className="brand-badge">Yihuan Wiki Crawler</Tag>
+            <Title level={3} className="brand-title">
+              Yihuan Guide Desk
             </Title>
-            <Text className="header-description">{currentPage.description}</Text>
+            <Paragraph className="brand-subtitle">
+              简洁、直观、面向角色资料整理的桌面工作台。
+            </Paragraph>
           </div>
-          <Space size="middle" className="header-status" wrap>
-            <Tag className="status-tag">第七阶段</Tag>
-            <Text>时间：{dayjs().format('YYYY-MM-DD HH:mm:ss')}</Text>
-            <Text>IPC：{pingResult}</Text>
-            <Button type="primary" loading={pingLoading} onClick={() => void handlePing()}>
-              测试连接
-            </Button>
-          </Space>
-        </Header>
+          <Menu
+            theme="dark"
+            mode="inline"
+            selectedKeys={[activePage]}
+            items={menuItems}
+            onClick={({ key }) => setActivePage(key as PageKey)}
+          />
+        </Sider>
 
-        <Content className="app-content">
-          <div className="page-scroll">{pageNode}</div>
-        </Content>
+        <Layout className="app-main">
+          <Header className="app-header">
+            <div className="header-copy">
+              <Text className="header-kicker">攻略站控制台</Text>
+              <Title level={3} className="header-title">
+                {currentPage.title}
+              </Title>
+              <Text className="header-description">{currentPage.description}</Text>
+            </div>
+            <Space size="middle" className="header-status" wrap>
+              <Tag className="status-tag">第七阶段</Tag>
+              <Text>时间：{dayjs().format('YYYY-MM-DD HH:mm:ss')}</Text>
+              <Text>IPC：{pingResult}</Text>
+              <Button type="primary" loading={pingLoading} onClick={() => void handlePing()}>
+                测试连接
+              </Button>
+            </Space>
+          </Header>
+
+          <Content className="app-content">
+            <div className="page-scroll">{pageNode}</div>
+          </Content>
+        </Layout>
       </Layout>
     </Layout>
   )

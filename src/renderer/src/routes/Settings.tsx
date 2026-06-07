@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import {
+  App as AntdApp,
   Alert,
   Button,
   Card,
@@ -11,8 +12,7 @@ import {
   Row,
   Space,
   Switch,
-  Typography,
-  message
+  Typography
 } from 'antd'
 import { electronApi } from '@renderer/api/electronApi'
 import { useSettingsStore } from '@renderer/stores/settingsStore'
@@ -31,6 +31,7 @@ function normalizeFormValues(values: AppSettings): AppSettings {
 }
 
 export function Settings(): JSX.Element {
+  const { modal, message } = AntdApp.useApp()
   const [form] = Form.useForm<AppSettings>()
   const [checkingEnv, setCheckingEnv] = useState(false)
   const [envResult, setEnvResult] = useState<EnvironmentCheckResult | null>(null)
@@ -52,23 +53,56 @@ export function Settings(): JSX.Element {
   const handleSave = async (): Promise<void> => {
     try {
       const values = normalizeFormValues(await form.validateFields())
-      await saveSettings(values)
-      void message.success('设置已保存。')
+      const saved = await saveSettings(values)
+      form.setFieldsValue(saved)
+      await modal.success({
+        title: '设置已保存',
+        content: '新的全局设置已写入 data/settings.json，后续任务会使用这些默认值。',
+        okText: '知道了'
+      })
     } catch (error) {
-      if (error instanceof Error) {
-        void message.error(error.message)
+      if (typeof error === 'object' && error !== null && 'errorFields' in error) {
+        await modal.warning({
+          title: '请先完善设置项',
+          content: '表单中还有未填写或格式不正确的字段，请修正后再保存。',
+          okText: '继续修改'
+        })
+        return
       }
+
+      await modal.error({
+        title: '保存失败',
+        content: error instanceof Error ? error.message : '保存设置时发生未知错误。',
+        okText: '关闭'
+      })
     }
   }
 
-  const handleReset = async (): Promise<void> => {
-    try {
-      const reset = await resetSettings()
-      form.setFieldsValue(reset)
-      void message.success('设置已恢复为默认值。')
-    } catch (error) {
-      void message.error(error instanceof Error ? error.message : '重置设置失败。')
-    }
+  const handleReset = (): void => {
+    void modal.confirm({
+      title: '恢复默认设置',
+      content: '这会覆盖当前已保存的全局设置，并立即写入 data/settings.json。',
+      okText: '恢复默认',
+      cancelText: '取消',
+      okButtonProps: { danger: true },
+      onOk: async () => {
+        try {
+          const reset = await resetSettings()
+          form.setFieldsValue(reset)
+          await modal.success({
+            title: '默认设置已恢复',
+            content: '全局设置已经恢复为默认值。',
+            okText: '知道了'
+          })
+        } catch (error) {
+          await modal.error({
+            title: '恢复失败',
+            content: error instanceof Error ? error.message : '恢复默认设置失败。',
+            okText: '关闭'
+          })
+        }
+      }
+    })
   }
 
   const handleEnvCheck = async (): Promise<void> => {
@@ -89,7 +123,7 @@ export function Settings(): JSX.Element {
     <Space direction="vertical" size={20} style={{ display: 'flex' }}>
       <div className="page-intro">
         <Paragraph>
-          统一管理 Python 路径、输出目录、导出目录，以及爬取过程的默认参数。在“爬取任务”页临时修改参数不会自动覆盖这里的设置。
+          统一管理 Python 路径、输出目录、导出目录，以及爬取过程的默认参数。在“爬取任务”页临时修改参数时，不会自动覆盖这里的设置。
         </Paragraph>
       </div>
 
@@ -142,7 +176,7 @@ export function Settings(): JSX.Element {
               </Form.Item>
             </Col>
             <Col xs={24} md={12} xl={8}>
-              <Form.Item label="页面等待时间(ms)" name="pageWaitMs">
+              <Form.Item label="页面等待时间 (ms)" name="pageWaitMs">
                 <InputNumber min={100} max={20000} step={100} style={{ width: '100%' }} />
               </Form.Item>
             </Col>
@@ -150,7 +184,7 @@ export function Settings(): JSX.Element {
 
           <Row gutter={16}>
             <Col xs={24} md={12} xl={8}>
-              <Form.Item label="点击等待时间(ms)" name="clickWaitMs">
+              <Form.Item label="点击等待时间 (ms)" name="clickWaitMs">
                 <InputNumber min={100} max={20000} step={100} style={{ width: '100%' }} />
               </Form.Item>
             </Col>
@@ -160,7 +194,7 @@ export function Settings(): JSX.Element {
             <Button type="primary" loading={saving} onClick={() => void handleSave()}>
               保存设置
             </Button>
-            <Button loading={saving} onClick={() => void handleReset()}>
+            <Button loading={saving} onClick={handleReset}>
               恢复默认设置
             </Button>
             <Button loading={checkingEnv} onClick={() => void handleEnvCheck()}>
@@ -176,7 +210,7 @@ export function Settings(): JSX.Element {
             <Alert
               type={envResult.checks.every((item) => item.ok) ? 'success' : 'warning'}
               showIcon
-              message={envResult.checks.every((item) => item.ok) ? '环境检查通过。' : '环境存在需要处理的项目。'}
+              message={envResult.checks.every((item) => item.ok) ? '环境检查通过。' : '环境中存在需要处理的项目。'}
               description={envResult.playwrightMessage}
             />
             <Descriptions column={1} bordered size="small">

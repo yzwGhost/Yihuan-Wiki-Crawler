@@ -10,6 +10,7 @@ import type { EnvironmentCheckResult } from '@shared/environment'
 import type { CharacterDetail, CharacterSummary } from '@shared/character'
 import type { AppSettings } from '@shared/settings'
 import type { TaskDetail, TaskSummary } from '@shared/task'
+import type { WindowState } from '@shared/window'
 
 function subscribe<T>(channel: string, callback: (payload: T) => void): () => void {
   const listener = (_event: Electron.IpcRendererEvent, payload: T) => callback(payload)
@@ -46,12 +47,18 @@ const yihuanApi = {
   resetSettings: async (): Promise<AppSettings> => ipcRenderer.invoke('settings:reset'),
   checkEnvironment: async (): Promise<EnvironmentCheckResult> => ipcRenderer.invoke('env:check'),
   openPath: async (targetPath: string): Promise<void> => ipcRenderer.invoke('file:openPath', targetPath),
+  minimizeWindow: async (): Promise<void> => ipcRenderer.invoke('window:minimize'),
+  toggleMaximizeWindow: async (): Promise<void> => ipcRenderer.invoke('window:toggleMaximize'),
+  closeWindow: async (): Promise<void> => ipcRenderer.invoke('window:close'),
+  getWindowState: async (): Promise<WindowState> => ipcRenderer.invoke('window:getState'),
   onCrawlerMessage: (callback: (message: CrawlerMessage) => void): (() => void) =>
     subscribe('crawler:message', callback),
   onCrawlerDone: (callback: (payload: CrawlerDonePayload) => void): (() => void) =>
     subscribe('crawler:done', callback),
   onCrawlerError: (callback: (payload: CrawlerErrorPayload) => void): (() => void) =>
-    subscribe('crawler:error', callback)
+    subscribe('crawler:error', callback),
+  onWindowStateChange: (callback: (state: WindowState) => void): (() => void) =>
+    subscribe('window:stateChanged', callback)
 }
 
 contextBridge.exposeInMainWorld('yihuanApi', yihuanApi)
